@@ -17,25 +17,7 @@ def checkout(request):
     }
     return render(request,'purchase/checkout.html',context)
 
-def create_payment_intent(request,pk=18):
-    course = get_object_or_404(Course,pk=pk)
-    
-    try:
-        data = json.loads(request.data)
-        # Create a PaymentIntent with the order amount and currency
-        intent = stripe.PaymentIntent.create(
-            amount=course.price,
-            currency='aed',
-            automatic_payment_methods={
-                'enabled': True,
-            },
-        )
-        return JsonResponse({
-            'clientSecret': intent['client_secret']
-        })
-    except Exception as e:
-        return JsonResponse({'error':str(e)})
-    
+
 
 YOUR_DOMAIN = 'http://localhost:8000'
 
@@ -64,8 +46,8 @@ def create_checkout_session(request,pk=18):
                 "product_id": course.id
             },
             mode='payment',
-            success_url='https://github.com/',
-            cancel_url='https://www.google.com/',
+            success_url='/courses/addstudent/'+str(course.slug),
+            cancel_url=f'/{course.slug}/',
         )
         return JsonResponse(
             {
@@ -77,3 +59,6 @@ def create_checkout_session(request,pk=18):
         print(str(e))
 
     return redirect('/')
+
+
+

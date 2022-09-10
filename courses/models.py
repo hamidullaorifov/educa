@@ -31,6 +31,7 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(upload_to='images',null=True,blank=True)
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
+    students = models.ManyToManyField(CustomUser,related_name='courses')
     class Meta:
         ordering = ['-created']
     def __str__(self):
@@ -62,47 +63,53 @@ class Module(models.Model):
     course = models.ForeignKey(Course,related_name='modules',on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    # order = models.PositiveIntegerField(default=1)
     def __str__(self):
         return self.title
 
 
 class Content(models.Model):
     module = models.ForeignKey(Module,on_delete=models.CASCADE,related_name='contents')
-    content_type = models.ForeignKey(ContentType,
-    on_delete=models.CASCADE,
-    limit_choices_to={'model__in':(
-                            'text',
-                            'video',
-                            'image',
-                            'file')})
-    object_id = models.PositiveIntegerField()
-    item = GenericForeignKey('content_type','object_id')
+    video = models.FileField(upload_to='videos',blank=True,null=True)
+    title = models.CharField(blank=True,null=True,max_length=250)
+    #  order = models.PositiveIntegerField(default=1)
+    # content_type = models.ForeignKey(ContentType,
+    # on_delete=models.CASCADE,
+    # limit_choices_to={'model__in':(
+    #                         'text',
+    #                         'video',
+    #                         'image',
+    #                         'file')})
+    # object_id = models.PositiveIntegerField()
+    # item = GenericForeignKey('content_type','object_id')
 
 
-class ItemBase(models.Model):
-    owner = models.ForeignKey(CustomUser,related_name='%(class)s_related',on_delete=models.CASCADE)
-    title = models.CharField(max_length=250)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+# class ItemBase(models.Model):
+#     owner = models.ForeignKey(CustomUser,related_name='%(class)s_related',on_delete=models.CASCADE)
+#     title = models.CharField(max_length=250)
+#     created = models.DateTimeField(auto_now_add=True)
+#     updated = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        abstract = True
+#     class Meta:
+#         abstract = True
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
 
-class Text(ItemBase):
-    content = models.TextField()
+# class Text(ItemBase):
+#     content = models.TextField()
 
-class Image(ItemBase):
-    content = models.FileField(upload_to='images')
+# class Image(ItemBase):
+#     content = models.FileField(upload_to='images')
 
-class File(ItemBase):
-    content = models.FileField(upload_to='files')
+# class File(ItemBase):
+#     content = models.FileField(upload_to='files')
 
 
-class Video(ItemBase):
-    content = models.URLField()
+# class Video(ItemBase):
+#     content = models.URLField()
+
+
 
 
 class Comment(models.Model):

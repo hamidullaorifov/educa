@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Subject, Course, Module,Comment
+from .models import CustomUser, Subject, Course, Module,Comment,Content
 # Register your models here.
 
 
@@ -31,3 +31,9 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['course','author']
+
+
+@admin.register(Content)
+class ContentAdmin(admin.ModelAdmin):
+    list_display = ['module']
+

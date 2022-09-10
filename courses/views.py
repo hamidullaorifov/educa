@@ -1,7 +1,7 @@
 from .models import Comment
 from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
-from courses.models import Course,Rating
+from courses.models import Course,Rating,Content
 from django.conf import settings
 
 import stripe
@@ -102,3 +102,23 @@ def post_feedback(request,pk):
         rating.feedback = data['feedback']
         rating.save()
         return redirect(course.get_absolute_url())
+    
+@login_required
+def course_content(request,pk=1):
+    content = get_object_or_404(Content,pk=pk)
+    course = content.module.course
+    if request.user in course.students.all():
+        context = {
+            'content':content,
+        }
+        print(content)
+        return render(request,'courses/course-content.html',context=context)
+    else:
+        return redirect(course.get_absolute_url())
+
+@login_required
+def add_user_to_students(request,slug):
+    course = get_object_or_404(Course,slug=slug)
+    course.students.add(request.user)
+    content = Content.objects.filter(module__course=course).first()
+    return redirect('courses/content/'+content.pk)

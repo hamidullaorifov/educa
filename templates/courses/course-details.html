@@ -1,5 +1,6 @@
 			<!-- End banner Area -->	
 {% extends 'base.html' %}
+
 {% load static %}
 {% block content %}
 			<!-- Start course-details Area -->
@@ -79,7 +80,7 @@
 	                                </div>
 	                                <div class="jq-tab-content comment-wrap" data-tab="4">
 						                <div class="comments-area">
-						                    <h4>05 Comments</h4>
+						                    <h4>{{course.comments.all.count}} Comments</h4>
 											{% for comment in course.comments.all %}
 											{% if request.user == comment.author %}
 											<div class="comment-list left-padding">
@@ -96,9 +97,9 @@
 						                                    </p>
 						                                </div>
 						                            </div>
-						                            <div class="reply-btn">
+						                            <!-- <div class="reply-btn">
 						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
-						                            </div>
+						                            </div> -->
 						                        </div>
 						                    </div>   
 											{% else %}
@@ -116,9 +117,9 @@
 						                                    </p>
 						                                </div>
 						                            </div>
-						                            <div class="reply-btn">
+						                            <!-- <div class="reply-btn">
 						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
-						                            </div>
+						                            </div> -->
 						                        </div>
 						                    </div>  
 						                    {% endif %}
@@ -359,7 +360,8 @@
 									</a>
 								</li> {% endcomment %}
 							</ul>
-							<button type="submit" class="primary-btn text-uppercase" id="entroll-button">Enroll the course</a>
+							
+							<button type="submit" class="primary-btn text-uppercase" id="entroll-button">Enroll the course</button>
 						</div>
 					</div>
 				</div>	
