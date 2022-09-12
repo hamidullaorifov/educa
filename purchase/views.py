@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from courses.models import Course
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-import json
+import datetime
 import stripe
 
 
@@ -29,6 +29,8 @@ def create_checkout_session(request,pk=18):
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
+            expires_at=int(datetime.datetime.now(datetime.timezone.utc).timestamp()+5),
+            customer_email=request.user.email,
             line_items=[
                 {
                     'price_data': {
@@ -46,9 +48,12 @@ def create_checkout_session(request,pk=18):
                 "product_id": course.id
             },
             mode='payment',
+            # success_url='https://rapidapi.com/',
             success_url='/courses/addstudent/'+str(course.slug),
             cancel_url=f'/{course.slug}/',
+            # cancel_url=f'https://rapidapi.com/',
         )
+        print(session)
         return JsonResponse(
             {
                 'sessionId' : session.id,

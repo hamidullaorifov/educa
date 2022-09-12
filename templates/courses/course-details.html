@@ -1,504 +1,330 @@
-			<!-- End banner Area -->	
+ <!-- End banner Area -->
 {% extends 'base.html' %}
 
 {% load static %}
 {% block content %}
-			<!-- Start course-details Area -->
-			<section class="course-details-area pt-120">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-8 left-contents">
-							<div class="main-image">
-								<img class="img-fluid" src="{{course.picture.url}}" alt="">
-							</div>
-							<div class="jq-tab-wrapper" id="horizontalTab">
-	                            <div class="jq-tab-menu">
-	                                <div class="jq-tab-title active" data-tab="1">Objectives</div>
-	                                {% comment %} <div class="jq-tab-title" data-tab="2">Eligibility</div> {% endcomment %}
-	                                <div class="jq-tab-title" data-tab="3">Course Outline</div>
-	                                <div class="jq-tab-title" data-tab="4">Comments</div>
-	                                <div class="jq-tab-title" data-tab="5">Reviews</div>
-	                            </div>
-	                            <div class="jq-tab-content-wrapper">
-	                                <div class="jq-tab-content active" data-tab="1">
-										{{course.overview}}
-	                                    {% comment %} When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-										<br>
-										<br>
-	                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. {% endcomment %}
-	                                </div>
-	                                {% comment %} <div class="jq-tab-content" data-tab="2">
-	                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
-										<br>
-										<br>
-	                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
-	                                </div> {% endcomment %}
-	                                <div class="jq-tab-content" data-tab="3">
-										<ul class="course-list">
-											{% for module in course.modules.all %}
-											<li class="justify-content-between d-flex">
-												<p>{{module.title}}</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											{% empty %}
-											
-											{% endfor %}
-											{% comment %} <li class="justify-content-between d-flex">
-												<p>Basics of HTML</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Getting Know about HTML</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Tags and Attributes</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Basics of CSS</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Getting Familiar with CSS</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Introduction to Bootstrap</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>																		
-											<li class="justify-content-between d-flex">
-												<p>Responsive Design</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li>
-											<li class="justify-content-between d-flex">
-												<p>Canvas in HTML 5</p>
-												<a class="primary-btn text-uppercase" href="#">View Details</a>
-											</li> {% endcomment %}
-
-										</ul>
-	                                </div>
-	                                <div class="jq-tab-content comment-wrap" data-tab="4">
-						                <div class="comments-area">
-						                    <h4>{{course.comments.all.count}} Comments</h4>
-											{% for comment in course.comments.all %}
-											{% if request.user == comment.author %}
-											<div class="comment-list left-padding">
-						                        <div class="single-comment justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c2.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">{{comment.author}}</a></h5>
-						                                    <p class="date">{{comment.date|date:'F d, Y, h:i a'}}</p>
-						                                    <p class="comment">
-						                                        {{comment.content}}
-						                                    </p>
-						                                </div>
-						                            </div>
-						                            <!-- <div class="reply-btn">
-						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
-						                            </div> -->
-						                        </div>
-						                    </div>   
-											{% else %}
-						                    <div class="comment-list">
-						                        <div class="single-comment justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c1.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">{{comment.author}}</a></h5>
-						                                    <p class="date">{{comment.date|date:'F d, Y, h:i a'}}</p>
-						                                    <p class="comment">
-						                                        {{comment.content}}
-						                                    </p>
-						                                </div>
-						                            </div>
-						                            <!-- <div class="reply-btn">
-						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
-						                            </div> -->
-						                        </div>
-						                    </div>  
-						                    {% endif %}
-											{% endfor %}
-						                    {% comment %} <div class="comment-list">
-						                        <div class="single-comment justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c4.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">Maria Luna</a></h5>
-						                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-						                                    <p class="comment">
-						                                        Never say goodbye till the end comes!
-						                                    </p>
-						                                </div>
-						                            </div>
-						                            <div class="reply-btn">
-						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
-						                            </div>
-						                        </div>
-						                    </div>                                                     {% endcomment %}
-						                </div>
-						                <div class="comment-form">
-						                    <h4>Leave a Comment</h4>
-						                    <form method="post" action="{% url 'postcomment' course.id %}">
-												{% csrf_token %}
-						                        {% comment %} <div class="form-group form-inline">
-						                          <div class="form-group col-lg-6 col-md-12 name">
-						                            <input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
-						                          </div>
-						                          <div class="form-group col-lg-6 col-md-12 email">
-						                            <input type="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-						                          </div>                                        
-						                        </div>
-						                        <div class="form-group">
-						                            <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
-						                        </div> {% endcomment %}
-						                        <div class="form-group">
-						                            <textarea class="form-control mb-10" rows="5" name="message" placeholder="Comment" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Comment'" required=""></textarea>
-						                        </div>
-						                        {% comment %} <a href="#" class="mt-40 text-uppercase genric-btn primary text-center">Post Comment</a>  {% endcomment %}
-						                        <button type="submit" class="mt-40 text-uppercase genric-btn primary text-center">Post Comment</button>
-						                    </form>
-						                </div>     						                
-	                                </div>
-	                                <div class="jq-tab-content" data-tab="5">	
-	                                	<div class="review-top row pt-40">
-	                                		<div class="col-lg-3">
-	                                			<div class="avg-review">
-	                                				Average <br>
-	                                				<span>{{course.average_rating}}</span> <br>
-													<input type="hidden" id="myrate" value="{{myrate}}">
-	                                				({{course.ratings.count}} Ratings)
-	                                			</div>
-	                                		</div>
-	                                		<div class="col-lg-9">
-	                                			<h4 class="mb-20">Provide Your Rating</h4>
-	                                			<!-- <div class="d-flex flex-row reviews">
-	                                				<span>Quality</span>
-													<div class="star">
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-													</div>
-	                                				<span>Outstanding</span>
-	                                			</div>
-	                                			<div class="d-flex flex-row reviews">
-	                                				<span>Puncuality</span>
-													<div class="star">
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-													</div>
-	                                				<span>Outstanding</span>
-	                                			</div>
-	                                			<div class="d-flex flex-row reviews">
-	                                				<span>Quality</span>
-													<div class="star">
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star checked"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-													</div>
-	                                				<span>Outstanding</span>
-	                                			</div> -->
-												<div class="star">
-													<span class="rating fa fa-star" id="star1"></span>
-													<span class="rating fa fa-star" id="star2"></span>
-													<span class="rating fa fa-star" id="star3"></span>
-													<span class="rating fa fa-star" id="star4"></span>
-													<span class="rating fa fa-star" id="star5"></span>
-												</div>
-	                                		</div>
-	                                	</div>
-										<br>
-	                                	<div class="feedeback">
-	                                		<h4 class="pb-20">Your Feedback</h4>
-											<form action="{% url 'feedback' course.id %}" method="post">
-												{% csrf_token %}
-												<textarea name="feedback" class="form-control" cols="10" rows="10"></textarea>
-												<input type="text" style="display: none;" id="course-rating" name="rating">
-	                                		<!-- <a href="#" class="mt-20 primary-btn text-right text-uppercase">Submit</a> -->
-	                                		<button type="submit" class="mt-20 primary-btn text-right text-uppercase">Submit</button>
-											</form>
-	                                	</div>
-						                <div class="comments-area mb-30">
-											{% for rate in rates %}
-						                    <div class="comment-list">
-						                        <div class="single-comment single-reviews justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c1.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">{{rate.author}}</a>
-															<div class="star">
-																{% for i in rate.stars %}
-																<span class="fa fa-star checked"></span>
-																{% endfor %}
-																{% for i in rate.nostars %}
-																<span class="fa fa-star"></span>
-																{% endfor %}
-															</div>
-						                                    </h5>
-						                                    <p class="comment">
-						                                    	{{rate.feedback}}
-						                                    </p>
-						                                </div>
-						                            </div>
-						                        </div>
-						                    </div> 
-											{% endfor %} 
-						                    <!-- <div class="comment-list">
-						                        <div class="single-comment single-reviews justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c2.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">Elsie Cunningham</a>
-															<div class="star">
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star"></span>
-																<span class="fa fa-star"></span>
-															</div>
-						                                    </h5>
-						                                    <p class="comment">
-						                                    	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ut sed, dolorum asperiores perspiciatis provident, odit maxime doloremque aliquam.
-						                                    </p>
-						                                </div>
-						                            </div>
-						                        </div>
-						                    </div>   
-						                    <div class="comment-list">
-						                        <div class="single-comment single-reviews justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c3.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">Maria Luna</a>
-															<div class="star">
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star"></span>
-																<span class="fa fa-star"></span>
-															</div>
-						                                    </h5>
-						                                    <p class="comment">
-						                                    	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ut sed, dolorum asperiores perspiciatis provident, odit maxime doloremque aliquam.
-						                                    </p>
-						                                </div>
-						                            </div>
-						                        </div>
-						                    </div>  
-						                    <div class="comment-list">
-						                        <div class="single-comment single-reviews justify-content-between d-flex">
-						                            <div class="user justify-content-between d-flex">
-						                                <div class="thumb">
-						                                    <img src="img/blog/c4.jpg" alt="">
-						                                </div>
-						                                <div class="desc">
-						                                    <h5><a href="#">Maria Luna</a>
-															<div class="star">
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star checked"></span>
-																<span class="fa fa-star"></span>
-																<span class="fa fa-star"></span>
-															</div>
-						                                    </h5>
-						                                    <p class="comment">
-						                                    	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ut sed, dolorum asperiores perspiciatis provident, odit maxime doloremque aliquam.
-						                                    </p>
-						                                </div>
-						                            </div>
-						                        </div>
-						                    </div>  						                                                                       -->
-						                </div>                          	
-	                                </div>                                
-	                            </div>
-	                        </div>
+<!-- Start course-details Area -->
+<section class="course-details-area pt-120">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 left-contents">
+				<div class="main-image">
+					<img class="img-fluid" src="{{course.picture.url}}" alt="">
+				</div>
+				<div class="jq-tab-wrapper" id="horizontalTab">
+					<div class="jq-tab-menu">
+						<div class="jq-tab-title active" data-tab="1">Objectives</div>
+						<div class="jq-tab-title" data-tab="3">Course Outline</div>
+						<div class="jq-tab-title" data-tab="4">Comments</div>
+						<div class="jq-tab-title" data-tab="5">Reviews</div>
+					</div>
+					<div class="jq-tab-content-wrapper">
+						<div class="jq-tab-content active" data-tab="1">
+							{{course.overview}}
 						</div>
-						<div class="col-lg-4 right-contents">
-							<ul>
-								<li>
-									<a class="justify-content-between d-flex" href="#">
-										<p>Trainer’s Name</p> 
-										<span class="or">{{course.owner.first_name}} {{course.owner.last_name }}</span>
-									</a>
+						<div class="jq-tab-content" data-tab="3">
+							<ul class="course-list">
+								{% for module in course.modules.all %}
+								<li class="justify-content-between d-flex">
+									<p>{{module.title}}</p>
+									<a class="primary-btn text-uppercase" href="#">View Details</a>
 								</li>
-								<li>
-									<a class="justify-content-between d-flex" href="#">
-										<p>Course Fee </p>
-										<span>${{course.price}}</span>
-									</a>
-								</li>
-								{% comment %} <li>
-									<a class="justify-content-between d-flex" href="#">
-										<p>Available Seats </p>
-										<span>15</span>
-									</a>
-								</li> {% endcomment %}
-								{% comment %} <li>
-									<a class="justify-content-between d-flex" href="#">
-										<p>Schedule </p>
-										<span>2.00 pm to 4.00 pm</span>
-									</a>
-								</li> {% endcomment %}
+								{% empty %}
+
+								{% endfor %}
 							</ul>
-							
-							<button type="submit" class="primary-btn text-uppercase" id="entroll-button">Enroll the course</button>
+						</div>
+						<div class="jq-tab-content comment-wrap" data-tab="4">
+							<div class="comments-area">
+								<h4>{{course.comments.all.count}} Comments</h4>
+								{% for comment in course.comments.all %}
+								{% if request.user == comment.author %}
+								<div class="comment-list left-padding">
+									<div class="single-comment justify-content-between d-flex">
+										<div class="user justify-content-between d-flex">
+											<div class="thumb">
+												<img src="img/blog/c2.jpg" alt="">
+											</div>
+											<div class="desc">
+												<h5><a href="#">{{comment.author}}</a></h5>
+												<p class="date">{{comment.date|date:'F d, Y, h:i a'}}</p>
+												<p class="comment">
+													{{comment.content}}
+												</p>
+											</div>
+										</div>
+										<!-- <div class="reply-btn">
+						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
+						                            </div> -->
+									</div>
+								</div>
+								{% else %}
+								<div class="comment-list">
+									<div class="single-comment justify-content-between d-flex">
+										<div class="user justify-content-between d-flex">
+											<div class="thumb">
+												<img src="img/blog/c1.jpg" alt="">
+											</div>
+											<div class="desc">
+												<h5><a href="#">{{comment.author}}</a></h5>
+												<p class="date">{{comment.date|date:'F d, Y, h:i a'}}</p>
+												<p class="comment">
+													{{comment.content}}
+												</p>
+											</div>
+										</div>
+										<!-- <div class="reply-btn">
+						                                   <a href="" class="btn-reply text-uppercase">reply</a> 
+						                            </div> -->
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+							</div>
+							<div class="comment-form">
+								<h4>Leave a Comment</h4>
+								<form method="post" action="{% url 'postcomment' course.id %}">
+									{% csrf_token %}
+									<div class="form-group">
+										<textarea class="form-control mb-10" rows="5" name="message"
+											placeholder="Comment" onfocus="this.placeholder= ''"
+											onblur="this.placeholder= 'Comment'" required=""></textarea>
+									</div>
+									<button type="submit" class="mt-40 text-uppercase genric-btn primary
+										text-center">Post Comment</button>
+								</form>
+							</div>
+						</div>
+						<div class="jq-tab-content" data-tab="5">
+							<div class="review-top row pt-40">
+								<div class="col-lg-3">
+									<div class="avg-review">
+										Average <br>
+										<span>{{course.average_rating}}</span> <br>
+										<input type="hidden" id="myrate" value="{{myrate}}">
+										({{course.ratings.count}} Ratings)
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<h4 class="mb-20">Provide Your Rating</h4>
+									<div class="star">
+										<span class="rating fa fa-star" id="star1"></span>
+										<span class="rating fa fa-star" id="star2"></span>
+										<span class="rating fa fa-star" id="star3"></span>
+										<span class="rating fa fa-star" id="star4"></span>
+										<span class="rating fa fa-star" id="star5"></span>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="feedeback">
+								<h4 class="pb-20">Your Feedback</h4>
+								<form action="{% url 'feedback' course.id %}" method="post">
+									{% csrf_token %}
+									<textarea name="feedback" class="form-control" cols="10" rows="10"></textarea>
+									<input type="text" style="display: none;" id="course-rating"
+										name="rating">
+									<!-- <a href="#" class="mt-20 primary-btn text-right text-uppercase">Submit</a> -->
+									<button type="submit" class="mt-20 primary-btn text-right
+										text-uppercase">Submit</button>
+								</form>
+							</div>
+							<div class="comments-area mb-30">
+								{% for rate in rates %}
+								<div class="comment-list">
+									<div class="single-comment single-reviews justify-content-between
+										d-flex">
+										<div class="user justify-content-between d-flex">
+											<div class="thumb">
+												<img src="img/blog/c1.jpg" alt="">
+											</div>
+											<div class="desc">
+												<h5><a href="#">{{rate.author}}</a>
+													<div class="star">
+														{% for i in rate.stars %}
+														<span class="fa fa-star checked"></span>
+														{% endfor %}
+														{% for i in rate.nostars %}
+														<span class="fa fa-star"></span>
+														{% endfor %}
+													</div>
+												</h5>
+												<p class="comment">
+													{{rate.feedback}}
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
 						</div>
 					</div>
-				</div>	
-			</section>
-			<!-- End course-details Area -->
-			
+				</div>
+			</div>
+			<div class="col-lg-4 right-contents">
+				<ul>
+					<li>
+						<a class="justify-content-between d-flex" href="#">
+							<p>Trainer’s Name</p>
+							<span class="or">{{course.owner.first_name}} {{course.owner.last_name }}</span>
+						</a>
+					</li>
+					<li>
+						<a class="justify-content-between d-flex" href="#">
+							<p>Course Fee </p>
+							<span>${{course.price}}</span>
+						</a>
+					</li>
+				</ul>
 
-			<!-- Start popular-courses Area --> 
-			<section class="popular-courses-area section-gap courses-page">
-				<div class="container">
-					<div class="row d-flex justify-content-center">
-						<div class="menu-content pb-70 col-lg-8">
-							<div class="title text-center">
-								<h1 class="mb-10">Popular Courses we offer</h1>
-								<p>There is a moment in the life of any aspiring.</p>
-							</div>
-						</div>
-					</div>						
-					<div class="row">
-						<div class="single-popular-carusel col-lg-3 col-md-6">
-							<div class="thumb-wrap relative">
-								<div class="thumb relative">
-									<div class="overlay overlay-bg"></div>	
-									<img class="img-fluid" src="img/p1.jpg" alt="">
-								</div>
-								<div class="meta d-flex justify-content-between">
-									<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
-									<h4>$150</h4>
-								</div>									
-							</div>
-							<div class="details">
-								<a href="#">
-									<h4>
-										Learn Designing
-									</h4>
-								</a>
-								<p>
-									When television was young, there was a hugely popular show based on the still popular fictional characte										
-								</p>
-							</div>
-						</div>	
-						<div class="single-popular-carusel col-lg-3 col-md-6">
-							<div class="thumb-wrap relative">
-								<div class="thumb relative">
-									<div class="overlay overlay-bg"></div>	
-									<img class="img-fluid" src="img/p2.jpg" alt="">
-								</div>
-								<div class="meta d-flex justify-content-between">
-									<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
-									<h4>$150</h4>
-								</div>									
-							</div>
-							<div class="details">
-								<a href="#">
-									<h4>
-										Learn React js beginners
-									</h4>
-								</a>
-								<p>
-									When television was young, there was a hugely popular show based on the still popular fictional characte										
-								</p>
-							</div>
-						</div>	
-						<div class="single-popular-carusel col-lg-3 col-md-6">
-							<div class="thumb-wrap relative">
-								<div class="thumb relative">
-									<div class="overlay overlay-bg"></div>	
-									<img class="img-fluid" src="img/p3.jpg" alt="">
-								</div>
-								<div class="meta d-flex justify-content-between">
-									<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
-									<h4>$150</h4>
-								</div>									
-							</div>
-							<div class="details">
-								<a href="#">
-									<h4>
-										Learn Photography
-									</h4>
-								</a>
-								<p>
-									When television was young, there was a hugely popular show based on the still popular fictional characte										
-								</p>
-							</div>
-						</div>	
-						<div class="single-popular-carusel col-lg-3 col-md-6">
-							<div class="thumb-wrap relative">
-								<div class="thumb relative">
-									<div class="overlay overlay-bg"></div>	
-									<img class="img-fluid" src="img/p4.jpg" alt="">
-								</div>
-								<div class="meta d-flex justify-content-between">
-									<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
-									<h4>$150</h4>
-								</div>									
-							</div>
-							<div class="details">
-								<a href="#">
-									<h4>
-										Learn Surveying
-									</h4>
-								</a>
-								<p>
-									When television was young, there was a hugely popular show based on the still popular fictional characte										
-								</p>
-							</div>
-						</div>							
-						<a href="#" class="primary-btn text-uppercase mx-auto">Load More Courses</a>													
+				<button type="submit" class="primary-btn text-uppercase"
+					id="entroll-button">
+					Enroll the course
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End course-details Area -->
+
+
+<!-- Start popular-courses Area -->
+<section class="popular-courses-area section-gap courses-page">
+	<div class="container">
+		<div class="row d-flex justify-content-center">
+			<div class="menu-content pb-70 col-lg-8">
+				<div class="title text-center">
+					<h1 class="mb-10">Popular Courses we offer</h1>
+					<p>There is a moment in the life of any aspiring.</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="single-popular-carusel col-lg-3 col-md-6">
+				<div class="thumb-wrap relative">
+					<div class="thumb relative">
+						<div class="overlay overlay-bg"></div>
+						<img class="img-fluid" src="img/p1.jpg" alt="">
 					</div>
-				</div>	
-			</section>
-			<!-- End popular-courses Area -->					
-
-			<!-- Start cta-two Area -->
-			<section class="cta-two-area">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-8 cta-left">
-							<h1>Not Yet Satisfied with our Trend?</h1>
-						</div>
-						<div class="col-lg-4 cta-right">
-							<a class="primary-btn wh" href="#">view our blog</a>
-						</div>
+					<div class="meta d-flex justify-content-between">
+						<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
+						<h4>$150</h4>
 					</div>
-				</div>	
-			</section>
-			<!-- End cta-two Area -->						    			
+				</div>
+				<div class="details">
+					<a href="#">
+						<h4>
+							Learn Designing
+						</h4>
+					</a>
+					<p>
+						When television was young, there was a hugely popular show based on the
+						still popular fictional characte
+					</p>
+				</div>
+			</div>
+			<div class="single-popular-carusel col-lg-3 col-md-6">
+				<div class="thumb-wrap relative">
+					<div class="thumb relative">
+						<div class="overlay overlay-bg"></div>
+						<img class="img-fluid" src="img/p2.jpg" alt="">
+					</div>
+					<div class="meta d-flex justify-content-between">
+						<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
+						<h4>$150</h4>
+					</div>
+				</div>
+				<div class="details">
+					<a href="#">
+						<h4>
+							Learn React js beginners
+						</h4>
+					</a>
+					<p>
+						When television was young, there was a hugely popular show based on the
+						still popular fictional characte
+					</p>
+				</div>
+			</div>
+			<div class="single-popular-carusel col-lg-3 col-md-6">
+				<div class="thumb-wrap relative">
+					<div class="thumb relative">
+						<div class="overlay overlay-bg"></div>
+						<img class="img-fluid" src="img/p3.jpg" alt="">
+					</div>
+					<div class="meta d-flex justify-content-between">
+						<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
+						<h4>$150</h4>
+					</div>
+				</div>
+				<div class="details">
+					<a href="#">
+						<h4>
+							Learn Photography
+						</h4>
+					</a>
+					<p>
+						When television was young, there was a hugely popular show based on the
+						still popular fictional characte
+					</p>
+				</div>
+			</div>
+			<div class="single-popular-carusel col-lg-3 col-md-6">
+				<div class="thumb-wrap relative">
+					<div class="thumb relative">
+						<div class="overlay overlay-bg"></div>
+						<img class="img-fluid" src="img/p4.jpg" alt="">
+					</div>
+					<div class="meta d-flex justify-content-between">
+						<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
+						<h4>$150</h4>
+					</div>
+				</div>
+				<div class="details">
+					<a href="#">
+						<h4>
+							Learn Surveying
+						</h4>
+					</a>
+					<p>
+						When television was young, there was a hugely popular show based on the
+						still popular fictional characte
+					</p>
+				</div>
+			</div>
+			<a href="#" class="primary-btn text-uppercase mx-auto">Load More Courses</a>
+		</div>
+	</div>
+</section>
+<!-- End popular-courses Area -->
+
+<!-- Start cta-two Area -->
+<section class="cta-two-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 cta-left">
+				<h1>Not Yet Satisfied with our Trend?</h1>
+			</div>
+			<div class="col-lg-4 cta-right">
+				<a class="primary-btn wh" href="#">view our blog</a>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End cta-two Area -->
 
 
 
-			{% csrf_token %}
-			<script src="https://js.stripe.com/v3/"></script>
-			<script>
+{% csrf_token %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
 				let stripe = Stripe('{{stripe_public_key}}');
 				const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 				const entroll_btn = document.getElementById("entroll-button");
 				entroll_btn.addEventListener('click',event => {
+					console.log('Clicked');
+					entroll_btn.disabled=true;
 					fetch("{% url 'create-checkout-session' course.id %}", {
 					method: "POST",
 					headers: {
@@ -526,12 +352,7 @@
 					});
 				
 			</script>
-			
-
-
-
-
-			<script>
+<script>
 				let stars = document.getElementsByClassName("rating");
 				let myrate = document.getElementById("myrate").value;
 				for(let i=0;i<myrate;i++){
@@ -555,6 +376,5 @@
 				stars[0].addEventListener("mouseleave",function(){
 					stars[0].classList.remove("checked");
 				})
-			</script>	
-	{% endblock %}
-	
+			</script>
+{% endblock %}
