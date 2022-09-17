@@ -69,10 +69,10 @@
 									<div class="thumb relative">
 										<div class="overlay overlay-bg"></div>	
 										{% comment %} <img class="img-fluid" src="{% static 'img/p1.jpg' %}" alt=""> {% endcomment %}
-										<img class="img-fluid" src="{{course.picture.url}}" alt="">
+										<img class="img-fluid" src="{{course.picture.url}}" alt="" >
 									</div>
 									<div class="meta d-flex justify-content-between">
-										<p><span class="lnr lnr-users"></span> 355 <span class="lnr lnr-bubble"></span>35</p>
+										<p><span class="lnr lnr-users"></span> {{course.students.count}} <span class="lnr lnr-bubble"></span>{{course.comments.count}}</p>
 										<h4>${{course.price}}</h4>
 									</div>									
 								</div>

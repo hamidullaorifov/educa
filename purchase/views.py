@@ -5,15 +5,17 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import stripe
+import json
 
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 # Create your views here.
-def checkout(request):
-
+def checkout(request,pk):
+    course = get_object_or_404(Course,pk=pk)
     context = {
         'stripe_key':settings.STRIPE_PUBLIC_KEY,
+        'course':course,
     }
     return render(request,'purchase/checkout.html',context)
 
@@ -66,4 +68,34 @@ def create_checkout_session(request,pk=18):
     return redirect('/')
 
 
-
+@csrf_exempt
+def create_payment_intent(request,pk):
+    print(pk)
+    try:
+        customer = stripe.Customer.create(email=request.user.email)
+        course = Course.objects.get(pk=pk)
+        intent = stripe.PaymentIntent.create(
+            amount=int(100*course.price),
+            currency='usd',
+            customer=customer['id'],
+            metadata={
+                "product_id": course.id
+            },
+        )
+        return JsonResponse({
+            'clientSecret': intent['client_secret']
+        })
+    except Exception as e:
+        print(e)
+        return JsonResponse({ 'error': str(e) })
+@csrf_exempt
+def confirm_payment_intent(request):
+    if request.method=='POST':
+        data = json.loads(request.body)
+        payment_intent = stripe.PaymentIntent.modify(
+            data['clientSecret'],
+            payment_method=stripe.PaymentMethod.create(
+            type = "card",
+            card = data['card']
+            )
+        )

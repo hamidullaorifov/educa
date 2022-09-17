@@ -31,7 +31,7 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(upload_to='images',null=True,blank=True)
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
-    students = models.ManyToManyField(CustomUser,related_name='courses')
+    students = models.ManyToManyField(CustomUser,related_name='courses',blank=True,null=True)
     class Meta:
         ordering = ['-created']
     def __str__(self):

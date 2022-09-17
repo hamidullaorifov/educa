@@ -1,16 +1,19 @@
+import json
 from .models import Comment
 from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Course,Rating,Content
 from django.conf import settings
-
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.http import JsonResponse
 import stripe
 # Create your views here.
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 def home(request):
-    courses = Course.objects.all()[:8]
+    courses = Course.objects.all()
     context = {
         'courses':courses,
     }
@@ -42,41 +45,15 @@ def course_detail(request,slug):
     
 
 
-    ###########################################################################
-    # session = stripe.checkout.Session.create(
-    #    payment_method_types=['card'],
-    #         line_items=[
-    #             {
-    #                 'price_data': {
-    #                     'currency': 'usd',
-    #                     'unit_amount': int(course.price*100),
-    #                     'product_data': {
-    #                         'name': course.title,
-    #                         # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-    #                     },
-    #                 },
-    #                 'quantity': 1,
-    #             },
-    #         ],
-    #         metadata={
-    #             "product_id": course.id
-    #         },
-       
-    #     mode='payment',
-    #     success_url='https://github.com/',
-    #     cancel_url='https://www.google.com/',
-    # )
 
-    #############################################################################
     context = {
         'course':course,
         'myrate':my_rate,
         'rates':rates_list,
-        # 'session_id':session.id,
         'stripe_public_key':settings.STRIPE_PUBLIC_KEY, 
         
     }
-    return render(request,'courses/course-details.html',context)
+    return render(request,'courses/course-details2.html',context)
 
 
 @login_required
@@ -116,9 +93,19 @@ def course_content(request,pk=1):
     else:
         return redirect(course.get_absolute_url())
 
+
+@csrf_exempt
 @login_required
-def add_user_to_students(request,slug):
-    course = get_object_or_404(Course,slug=slug)
-    course.students.add(request.user)
-    content = Content.objects.filter(module__course=course).first()
-    return redirect('courses/content/'+content.pk)
+def add_user_to_students(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        course = get_object_or_404(Course,id=data['id'])
+        course.students.add(request.user)
+        content = course.modules.first().contents.first()
+        print(content)
+        return JsonResponse({
+            "url":"/courses/content/"+str(content.pk)
+        })
+    return JsonResponse({
+        'url':"",
+    })
