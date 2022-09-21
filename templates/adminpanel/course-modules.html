@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course modules</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <style>
+        .list-group-item {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Modules</h1>
+    <div class="container">
+        <div class="module-fields">
+            <div class="module-title">
+
+            </div>
+            <div class="module-description">
+    
+            </div>
+            <a href="" class="btn btn-primary" id="update-module-btn">Update</a>
+            <a href="" class="btn btn-danger" id="delete-module-btn">Delete</a>
+            <hr>
+        </div>
+        
+
+
+        <div class="row">
+            <div class="module-contents col-8">
+                <div class="module-contents-list">
+
+                </div>
+                <br><br>
+                <div class="">
+                    <a href="" class="btn btn-primary" id="create-content-btn">Add new content</a>
+                </div>
+            </div>
+            <div class="module-lists col-4">
+                {% for module in course.modules.all %}
+                <ul class="list-group">
+                    {% if forloop.first %}
+                    <li class="list-group-item active" aria-current="true" id="{{module.pk}}">{{module.title}}</li>
+                    {% else %}
+                    <li class="list-group-item" id="{{module.pk}}">{{module.title}}</li>
+                    {% endif %}
+                    
+                    
+                    {% empty %}
+                    There is not modules yet
+                    {% endfor %}
+                </ul>
+                <br><br>
+                <a href="{% url 'create_module' course.slug %}" class="btn btn-primary">Add new module</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let modules = document.querySelectorAll(".list-group-item");
+        const first_module = document.querySelector(".active");
+        const first_module_id = first_module.getAttribute("id");
+        let module_contents = document.querySelector(".module-contents-list");
+        fill_module_contents(first_module_id)
+        function fill_module_contents(module_id) {
+
+            const create_content_btn = document.getElementById("create-content-btn");
+            const update_module_btn = document.getElementById("update-module-btn");
+            const delete_module_btn = document.getElementById("delete-module-btn");
+            delete_module_btn.setAttribute("href","/teachers/course/module/delete/"+module_id);
+            update_module_btn.setAttribute("href","/teachers/course/module/update/"+module_id);
+            create_content_btn.setAttribute("href","/teachers/course/"+module_id+"/content/create/");
+
+
+
+            fetch("/teachers/get_module_contents/"+module_id,{
+            method:"GET",
+           
+        })
+        .then(function (response){
+            return response.json();
+        })
+        .then(function(data){
+            
+            const module_title = document.querySelector(".module-title");
+            const module_description = document.querySelector(".module-description");
+            module_title.innerHTML='<h2>Title:</h2>'+data.title+'<br>';
+            module_description.innerHTML='<h2>Description:</h2>'+data.description+'<br>';
+            let module_contents_innerHTML="";
+            let single_content=""
+            let contents=data['contents']
+            for(let j=0;j<contents.length;j++){
+                single_content='<a href="/courses/content/'+contents[j].pk+'">'+contents[j].title+'</a> <a href="/teachers/course/content/update/'+contents[j].pk+'" class="btn btn-primary">Update</a>  <a href="/teachers/course/content/delete/'+contents[j].pk+'" class="btn btn-danger">Delete</a><br>';
+            
+                module_contents_innerHTML+=single_content;    
+            }
+            module_contents.innerHTML=module_contents_innerHTML;
+        })
+        .catch(function(error){
+            console.error("Error occured",error);
+        })
+ 
+        }
+
+
+                
+        for(let i=0;i<modules.length;i++){
+            modules[i].addEventListener("click",function(){
+                const active_element = document.querySelector(".list-group-item.active");
+                active_element.classList.remove("active");
+                modules[i].classList.add('active');
+                fill_module_contents(modules[i].getAttribute("id"));
+            })
+
+            
+        }
+    </script>
+</body>
+</html>

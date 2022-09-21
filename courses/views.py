@@ -84,7 +84,7 @@ def post_feedback(request,pk):
 def course_content(request,pk=1):
     content = get_object_or_404(Content,pk=pk)
     course = content.module.course
-    if request.user in course.students.all():
+    if request.user in course.students.all() or request.user==course.owner:
         context = {
             'content':content,
         }

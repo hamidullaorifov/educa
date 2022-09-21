@@ -5,17 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Update module</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
-    <h1>My courses</h1>
-    {% for course in my_courses %}
-        <a href="">{{course.title}}</a>
-        <br>
-    {% empty %}
-    <h2> You have not any courses yet.</h2>
-    {% endfor %}
-    <a href="">Add new course</a>
+    <h1>Update module</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+    <button type="submit">Save</button>
+    </form>
+
 </body>
 </html>

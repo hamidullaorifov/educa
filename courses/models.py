@@ -3,7 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.urls import reverse
-from datetime import datetime
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils.text import slugify
+
+
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -31,7 +35,7 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(upload_to='images',null=True,blank=True)
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
-    students = models.ManyToManyField(CustomUser,related_name='courses',blank=True,null=True)
+    students = models.ManyToManyField(CustomUser,related_name='courses',blank=True)
     class Meta:
         ordering = ['-created']
     def __str__(self):
@@ -56,7 +60,9 @@ class Course(models.Model):
             return total_rating/count
         else:
             return ""
-
+@receiver(pre_save,sender=Course)
+def slugify_title(sender, instance, *args, **kwargs):
+    instance.slug = slugify(instance.title)
     
 
 class Module(models.Model):
@@ -68,10 +74,23 @@ class Module(models.Model):
         return self.title
 
 
+    @property
+    def owner(self):
+        return self.course.owner
+
+
 class Content(models.Model):
     module = models.ForeignKey(Module,on_delete=models.CASCADE,related_name='contents')
     video = models.FileField(upload_to='videos',blank=True,null=True)
     title = models.CharField(blank=True,null=True,max_length=250)
+
+
+    @property
+    def owner(self):
+        return self.module.course.owner
+
+
+
     #  order = models.PositiveIntegerField(default=1)
     # content_type = models.ForeignKey(ContentType,
     # on_delete=models.CASCADE,
