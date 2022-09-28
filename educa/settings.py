@@ -22,7 +22,7 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-096ys(l=#yfws!m**#@f=((2h@#l_q&^9mx%zwsirf$%xuf04('
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -135,8 +135,8 @@ USE_TZ = True
 
 
 
-STRIPE_PUBLIC_KEY = 'pk_test_51LeVA9Bv5exephzlJ0gDtk7k6jPdSXWzSsbf8IO9OJvlRcLC6eX1g7UzMOBH5kI0HOOT8goLis6OtGQ53P365zVd00ABr0n7pf'
-STRIPE_SECRET_KEY = 'sk_test_51LeVA9Bv5exephzlOimlTTwBdJw1G14lBCCSl5zNn4Z6piC0n1pnlEZhi0KKVQI89ijjIhaNzjvZclSSZXVPsKbW00a9LQhHoq'
+STRIPE_PUBLIC_KEY = ''
+STRIPE_SECRET_KEY = ''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
