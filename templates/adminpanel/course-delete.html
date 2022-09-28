@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Course</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-</head>
-<body>
+{% extends 'adminpanel/base.html' %}
+{% block content %}
     <h1>Delete course</h1>
     <form method="post">
         {% csrf_token %}
-    <button type="submit">Delete</button> 
-    <a href="{% url 'mycourses' %}">Back</a>
+    <button type="submit" class="btn btn-danger">Delete</button> 
+    <a href="{% url 'mycourses' %}" class="btn btn-outline-primary">Back</a>
     </form>
 
-</body>
-</html>
+{% endblock %}

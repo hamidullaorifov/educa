@@ -1,8 +1,7 @@
-from email import message
 from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login,logout,authenticate
-
+from django.contrib.auth.decorators import login_required
 from courses.models import CustomUser
 
 def login_view(request):
@@ -43,3 +42,9 @@ def sign_up(request):
 
 
 # Create your views here.
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')

@@ -47,10 +47,10 @@ class Course(models.Model):
     
     @property
     def picture_url(self):
-        try:
+        if self.picture:
             url=self.picture.url
-        except:
-            url=''
+        else:
+            url='https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dW5pdmVyc2l0eSUyMHN0dWRlbnR8ZW58MHx8MHx8&w=1000&q=80'
         return url
     def average_rating(self):
         ratings = self.ratings.all()
@@ -59,7 +59,7 @@ class Course(models.Model):
         if not count==0:
             return total_rating/count
         else:
-            return ""
+            return "No"
 @receiver(pre_save,sender=Course)
 def slugify_title(sender, instance, *args, **kwargs):
     instance.slug = slugify(instance.title)

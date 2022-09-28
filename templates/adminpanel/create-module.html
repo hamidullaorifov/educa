@@ -1,20 +1,14 @@
-    <!DOCTYPE html>
-    {% load static %}
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Module</title>
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    </head>
-    <body>
+    {% extends 'adminpanel/base.html' %}
+    {% block content %}
+    <div class="container">
         <h1>Create module</h1>
-        <form method="post">
+        <form method="post" class="form-group w-50">
             {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Save</button>
+            {{form.errors}}
+            {{form.as_p}}
+        <button type="submit" class="btn btn-primary w-100">Save</button>
         </form>
-
-    </body>
-    </html>
+        
+    </div>
+    {% endblock content %}
+    

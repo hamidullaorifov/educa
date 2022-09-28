@@ -10,9 +10,7 @@ from django.http import HttpResponseForbidden
 # Create your views here.
 @login_required
 def my_courses(request):
-    user = request.user
-    my_courses = Course.objects.filter(owner=user)
-
+    mycourses = request.user.courses
     context = {
         'my_courses':my_courses
     }
@@ -177,7 +175,7 @@ def update_content(request,id):
 
 
 @login_required   
-def delete_content(request,):
+def delete_content(request,id):
     content = get_object_or_404(Content,pk=id)
     if not content.owner == request.user:
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
@@ -188,5 +186,5 @@ def delete_content(request,):
     return render(request,'adminpanel/delete-content.html',{'course':course})
 
 
-def forbidden(request):
-    return HttpResponseForbidden("You are not allowed")
+# def forbidden(request):
+#     return HttpResponseForbidden("You are not allowed")

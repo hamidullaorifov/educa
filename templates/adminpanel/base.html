@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% comment %} <script src="https://kit.fontawesome.com/9faf87c843.js" crossorigin="anonymous"></script> {% endcomment %}
+       
+    
+    
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand navbar-dark bg-primary mb-3 mt-2">
+            <div class="container-fluid">
+              {% comment %} <a class="navbar-brand" href="{% url 'mycourses' %}">My courses</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup"> {% endcomment %}
+                <div class="navbar-nav">
+                  <a class="nav-link active" aria-current="page" href="{% url 'mycourses' %}">My courses</a>
+                  <a class="nav-link" href="{% url 'home' %}">Learning</a>
+
+                </div>
+              {% comment %} </div> {% endcomment %}
+            </div>
+          </nav>
+        {% block content %}
+        {% endblock content %}
+    </div>
+    {% comment %} <script src="https://kit.fontawesome.com/9faf87c843.js" crossorigin="anonymous"></script> {% endcomment %}
+</body>
+</html>

@@ -5,19 +5,38 @@ from django.contrib.auth.decorators import login_required
 from courses.models import Course,Rating,Content
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.http import JsonResponse
 import stripe
+from django.db.models import Count
 # Create your views here.
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 def home(request):
-    courses = Course.objects.all()
+    courses = Course.objects.annotate(num_students=Count('students')).order_by('-num_students')[:16]
     context = {
         'courses':courses,
     }
     return render(request,'courses/index.html',context)
+
+
+
+
+def paginate_courses(request):
+    print(request.user)
+    courses_list = Course.objects.all()
+    paginator = Paginator(courses_list,8)
+    page_number = request.GET.get('page',1)
+    try:
+        courses = paginator.page(page_number)
+    except PageNotAnInteger:
+        courses = paginator.page(1)
+    except EmptyPage:
+        courses = paginator.page(paginator.num_pages)
+    return render(request,'courses/courses.html',{'courses':courses})
+
+
 
 
 def course_detail(request,slug):

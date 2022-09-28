@@ -9,11 +9,11 @@
 		<div class="row">
 			<div class="col-lg-8 left-contents">
 				<div class="main-image">
-					<img class="img-fluid" src="{{course.picture.url}}" alt="">
+					<img class="img-fluid" src="{{course.picture_url}}" width="70%"  alt="">
 				</div>
 				<div class="jq-tab-wrapper" id="horizontalTab">
 					<div class="jq-tab-menu">
-						<div class="jq-tab-title active" data-tab="1">Objectives</div>
+						<div class="jq-tab-title active" data-tab="1">Course overview</div>
 						<div class="jq-tab-title" data-tab="3">Course Outline</div>
 						<div class="jq-tab-title" data-tab="4">Comments</div>
 						<div class="jq-tab-title" data-tab="5">Reviews</div>
@@ -27,7 +27,7 @@
 								{% for module in course.modules.all %}
 								<li class="justify-content-between d-flex">
 									<p>{{module.title}}</p>
-									<a class="primary-btn text-uppercase" href="#">View Details</a>
+									<a class="primary-btn text-uppercase" href="">View Details</a>
 								</li>
 								{% empty %}
 
@@ -166,6 +166,18 @@
 				<ul>
 					<li>
 						<a class="justify-content-between d-flex" href="#">
+							<p>Subject</p>
+							<span class="or">{{ course.subject }}</span>
+						</a>
+					</li>
+					<li>
+						<a class="justify-content-between d-flex" href="#">
+							<p>Title</p>
+							<span class="or">{{ course.title }}</span>
+						</a>
+					</li>
+					<li>
+						<a class="justify-content-between d-flex" href="#">
 							<p>Trainer’s Name</p>
 							<span class="or">{{course.owner.first_name}} {{course.owner.last_name }}</span>
 						</a>
@@ -194,7 +206,7 @@
 
 
 <!-- Start popular-courses Area -->
-<section class="popular-courses-area section-gap courses-page">
+{% comment %} <section class="popular-courses-area section-gap courses-page">
 	<div class="container">
 		<div class="row d-flex justify-content-center">
 			<div class="menu-content pb-70 col-lg-8">
@@ -300,7 +312,7 @@
 			<a href="#" class="primary-btn text-uppercase mx-auto">Load More Courses</a>
 		</div>
 	</div>
-</section>
+</section> {% endcomment %}
 <!-- End popular-courses Area -->
 
 <!-- Start cta-two Area -->
@@ -380,5 +392,26 @@
 				stars[0].addEventListener("mouseleave",function(){
 					stars[0].classList.remove("checked");
 				})
+
+
+
+				
+					const banner_area = document.getElementById("home");
+					banner_area.classList.add("about-banner");
+					banner_area.innerHTML=`
+					<div class="overlay overlay-bg"></div>
+					<div class="container">				
+						<div class="row d-flex align-items-center justify-content-center">
+							<div class="about-content col-lg-12">
+								<h1 class="text-white">
+									Course details		
+								</h1>	
+								<p class="text-white link-nav"><a href="{% url 'home' %}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{% url 'paginate_courses' %}"> All Courses</a></p>
+							</div>	
+						</div>
+					</div>
+					`
+	
+				
 			</script>
 {% endblock %}
