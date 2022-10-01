@@ -3,16 +3,16 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from courses.models import Course, Module,Content
 from .forms import CourseForm,ModuleForm,ContentForm
-from django.http import JsonResponse
-from .utils import owner_required,check_owner
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseForbidden
 
 # Create your views here.
 @login_required
 def my_courses(request):
-    mycourses = request.user.courses
+    mycourses = request.user.courses_created.all()
     context = {
-        'my_courses':my_courses
+        'my_courses':mycourses,
     }
     return render(request,'adminpanel/mycourses.html',context)
 
@@ -60,14 +60,19 @@ def delete_course(request,pk):
     return render(request,'adminpanel/course-delete.html')
 
 @login_required
-def course_modules(request,pk):
+def course_modules_details(request,pk,module_pk=None):
     course = get_object_or_404(Course,pk=pk)
     if not course.owner == request.user:
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
+    if module_pk:
+        module = course.modules.get(pk=module_pk)
+    else:
+        module = course.modules.first()
     context = {
-        'course':course
+        'course':course,
+        'module':module,
     }
-    return render(request,'adminpanel/course-modules.html',context)
+    return render(request,'adminpanel/course-modules-details.html',context)
 
 
 @login_required
@@ -187,4 +192,39 @@ def delete_content(request,id):
 
 
 # def forbidden(request):
-#     return HttpResponseForbidden("You are not allowed")
+#     return HttpResponseForbidden("You are not  
+
+@csrf_exempt
+@login_required
+def sort_modules(request,pk,module_pk):
+    course = get_object_or_404(Course,pk=pk)
+    if not course.owner == request.user:
+        return HttpResponseForbidden("<h1>You are not allowed</h1>")
+    current_module = get_object_or_404(Module,pk=module_pk)
+    if request.method=='POST':
+        modules_pks = request.POST.getlist("module")
+        print(modules_pks)
+        for idx,id in enumerate(modules_pks,start=1):
+            module = get_object_or_404(Module,pk=id)
+            module.order = idx
+            module.save()
+    context = {
+        'course':course,
+        'module':current_module,
+    }
+    return render(request,'adminpanel/partials/modules-list.html',context)
+
+
+@csrf_exempt
+@login_required
+def sort_contents(request,pk,module_pk):
+    module = get_object_or_404(Module,pk=module_pk)
+    if not module.owner == request.user:
+        return HttpResponseForbidden("<h1>You are not allowed</h1>")
+    if request.method=='POST':
+        contents_pks=request.POST.getlist("content")
+        for idx,id in enumerate(contents_pks,start=1):
+            content = get_object_or_404(Content,pk=id)
+            content.order=idx
+            content.save()
+    return render(request,'adminpanel/partials/contents-list.html',{'module':module})

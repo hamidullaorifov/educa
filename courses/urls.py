@@ -9,6 +9,7 @@ urlpatterns = [
     path('courses/feedback/<int:pk>',views.post_feedback,name='feedback'),
     path('courses/content/<int:pk>',views.course_content,name='course_content'),
     path('courses/addstudent/',views.add_user_to_students,name='entroll_course'),
+    path('courses/module-details/<int:pk>',views.module_details,name='module_details'),
     path('courses/<slug:slug>',views.course_detail,name='course_detail'),
 
 ]

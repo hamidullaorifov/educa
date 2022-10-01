@@ -52,30 +52,28 @@
             <div class="left col-8">
                 <div class="video-content container-fluid">
                     <video width="720" controls>
-                        <source src="{{content.video.url}}" type="video/mp4">
+                        <source src="{{course_content.video.url}}" type="video/mp4" >
                     </video>
                 </div>
             </div>
             <div class="right col-4">
                 <!-- <ul class="course-moduls"> -->
                     <div class="accordion" id="accordionExample">
-                        {% for module in content.module.course.modules.all %}
+                        {% for module in course_content.module.course.modules.all %}
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading{{module.id}}">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module.id}}" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module.id}}" aria-expanded="true" aria-controls="collapse{{module.id}}">
                             <!-- <li class="course-modul"> -->
                                 <strong>{{module.title}}</strong>
                                 </button>
                             </h2>
-                            <div id="collapse{{module.id}}" class="accordion-collapse collapse show" aria-labelledby="heading{{module.id}}" data-bs-parent="#accordionExample">
+                            <div id="collapse{{module.id}}" class="accordion-collapse collapse {% if module == course_content.module %} show{% endif %}" aria-labelledby="heading{{module.id}}" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                <ol class="course-contents">
+                                <div class="course-contents list-group list-group-flush">
                                     {% for content in module.contents.all %}
-                                    <div class="content-title-wrapper">
-                                        <li><a href="{% url 'course_content' content.pk %}">{{content.title}}</a></li>
-                                    </div>
+                                        <a href="{% url 'course_content' content.pk %}" class="list-group-item content-title {% if content == course_content %} active {% endif %} %}">{{content.title}}</a>
                                     {% endfor %}
-                                <!-- </ul> -->
+                                </div>
                                 </div>
                             </div>
                             <!-- </li> -->

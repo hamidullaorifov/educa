@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% comment %} <script src="https://kit.fontawesome.com/9faf87c843.js" crossorigin="anonymous"></script> {% endcomment %}
+       
+    
+    
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="mt-4 p-5 bg-light text-dark rounded">
+            <a href="{% url 'course_detail' module.course.slug %}" class="btn btn-outline-primary">Back</a>
+            <h1>{{ module.title }} module details</h1>
+            <p>{{module.description}}</p>
+            <p>Duration: {{module.duration}}<p>
+          </div>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Content</th>
+                <th scope="col">Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for content in module.contents.all %}
+                    <tr>
+                        <th scope="row">#</th>
+                        <td>{{content.title}}</td>
+                        <td>{{content.duration}}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+          </table>        
+        
+    </div>
+    
+</body>
+</html>
+
+
+
+
+

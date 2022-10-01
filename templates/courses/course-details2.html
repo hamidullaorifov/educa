@@ -23,11 +23,11 @@
 							{{course.overview}}
 						</div>
 						<div class="jq-tab-content" data-tab="3">
-							<ul class="course-list">
+							<ul class="course-list accordion accordion-flush">
 								{% for module in course.modules.all %}
 								<li class="justify-content-between d-flex">
 									<p>{{module.title}}</p>
-									<a class="primary-btn text-uppercase" href="">View Details</a>
+									<a class="primary-btn text-uppercase" href="{% url 'module_details' module.pk %}">View Details</a>
 								</li>
 								{% empty %}
 
@@ -165,27 +165,27 @@
 			<div class="col-lg-4 right-contents">
 				<ul>
 					<li>
-						<a class="justify-content-between d-flex" href="#">
-							<p>Subject</p>
-							<span class="or">{{ course.subject }}</span>
-						</a>
-					</li>
-					<li>
-						<a class="justify-content-between d-flex" href="#">
-							<p>Title</p>
-							<span class="or">{{ course.title }}</span>
-						</a>
-					</li>
-					<li>
-						<a class="justify-content-between d-flex" href="#">
+						<a class="justify-content-between d-flex" href="">
 							<p>Trainer’s Name</p>
-							<span class="or">{{course.owner.first_name}} {{course.owner.last_name }}</span>
+							<span>{{course.owner.first_name}} {{course.owner.last_name }}</span>
 						</a>
 					</li>
 					<li>
-						<a class="justify-content-between d-flex" href="#">
+						<a class="justify-content-between d-flex" href="">
+							<p>Title</p>
+							<span >{{ course.title }}</span>
+						</a>
+					</li>
+					<li>
+						<a class="justify-content-between d-flex" href="">
 							<p>Course Fee </p>
 							<span>${{course.price}}</span>
+						</a>
+					</li>
+					<li>
+						<a class="justify-content-between d-flex" href="">
+							<p>Course duration </p>
+							<span>{{course.duration}}</span>
 						</a>
 					</li>
 				</ul>
@@ -194,10 +194,17 @@
 					id="entroll-button">
 					Enroll the course
 				</button> {% endcomment %}
+	
+				{% if request.user.is_authenticated and course in request.user.courses.all %}
+				<a href="{% url 'course_content' course.pk %}" class="primary-btn text-uppercase">
+					Go to course
+				</a>
+				{% else %}
 				<a href="{% url 'checkout' course.pk %}" class="primary-btn text-uppercase"
 					id="entroll-button">
 					Enroll the course
 				</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>

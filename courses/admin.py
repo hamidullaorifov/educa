@@ -28,12 +28,21 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ['course','title']
+    
+    # class Meta:
+    #     ordering = ('course',)  
+
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['course','author']
+    
+    
 
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
     list_display = ['module']
+    class Meta:
+        ordering = ('module',)  
 

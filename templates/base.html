@@ -70,12 +70,15 @@
 					{% endif %}
 					<li><a href="{% url 'mycourses' %}">Teaching</a></li>
 					<li><a href="gallery.html">Gallery</a></li>
-					<li class="menu-has-children"><a href="">Blog</a>
+					{% if request.user.is_authenticated %}
+					<li class="menu-has-children"><a href="">My learnings</a>
 					<ul>
-						<li><a href="blog-home.html">Blog Home</a></li>
-						<li><a href="blog-single.html">Blog Single</a></li>
+						{% for c in request.user.courses.all %}
+						<li><a href="{{c.get_absolute_url}}">{{c.title}}</a></li>
+						{% endfor %}
 					</ul>
-					</li>	
+					</li>
+					{% endif %}	
 					<li class="menu-has-children"><a href="">Pages</a>
 					<ul>
 						<li><a href="course-details.html">Course Details</a></li>		

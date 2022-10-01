@@ -1,5 +1,5 @@
 import json
-from .models import Comment
+from .models import Comment, Module
 from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Course,Rating,Content
@@ -105,7 +105,7 @@ def course_content(request,pk=1):
     course = content.module.course
     if request.user in course.students.all() or request.user==course.owner:
         context = {
-            'content':content,
+            'course_content':content,
         }
         print(content)
         return render(request,'courses/course-content.html',context=context)
@@ -128,3 +128,8 @@ def add_user_to_students(request):
     return JsonResponse({
         'url':"",
     })
+
+
+def module_details(request,pk):
+    module = get_object_or_404(Module,pk=pk)
+    return render(request,'courses/module-details.html',{'module':module})

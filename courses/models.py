@@ -3,9 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.urls import reverse
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save,post_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
+from moviepy.editor import VideoFileClip
+from .utils import duration_formatting
+
+
 
 
 # Create your models here.
@@ -36,6 +40,7 @@ class Course(models.Model):
     picture = models.ImageField(upload_to='images',null=True,blank=True)
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
     students = models.ManyToManyField(CustomUser,related_name='courses',blank=True)
+    course_duration_seconds = models.FloatField(null=True,blank=True)
     class Meta:
         ordering = ['-created']
     def __str__(self):
@@ -60,16 +65,42 @@ class Course(models.Model):
             return total_rating/count
         else:
             return "No"
+    
+
+
+
+
+    @property
+    def duration(self):
+        return duration_formatting(self.course_duration_seconds)
+
 @receiver(pre_save,sender=Course)
 def slugify_title(sender, instance, *args, **kwargs):
-    instance.slug = slugify(instance.title)
+    if not instance.slug:
+        instance.slug = slugify(instance.title)
+    if not instance.course_duration_seconds:
+        instance.course_duration_seconds = sum([m.module_duration_seconds for m in instance.modules.all()])
+
+
     
+
+
+
+
+
+
+
 
 class Module(models.Model):
     course = models.ForeignKey(Course,related_name='modules',on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    # order = models.PositiveIntegerField(default=1)
+    module_duration_seconds = models.FloatField(null=True,blank=True)
+    order = models.PositiveIntegerField(blank=True,null=True)
+
+    class Meta:
+        ordering = ('order',)
+
     def __str__(self):
         return self.title
 
@@ -77,57 +108,66 @@ class Module(models.Model):
     @property
     def owner(self):
         return self.course.owner
+    
 
+    @property
+    def duration(self):
+        return duration_formatting(self.module_duration_seconds)
+
+
+@receiver(pre_save,sender=Module)
+def set_additional_fields(sender,instance,*args,**kwargs):
+    if not instance.module_duration_seconds:
+        instance.module_duration_seconds = sum([c.duration_seconds for c in instance.contents.all()])
+    if not instance.order:
+        instance.order = instance.course.modules.count()+1
+
+
+
+@receiver(post_delete,sender=Module)
+def update_module_orders(sender,instance,*args,**kwargs):
+    for module in instance.course.modules.filter(order__gt=instance.order):
+        module.order = module.order-1
+        module.save()
 
 class Content(models.Model):
     module = models.ForeignKey(Module,on_delete=models.CASCADE,related_name='contents')
     video = models.FileField(upload_to='videos',blank=True,null=True)
     title = models.CharField(blank=True,null=True,max_length=250)
+    order = models.PositiveIntegerField(blank=True,null=True)
 
+    class Meta:
+        ordering = ('order',)
 
     @property
     def owner(self):
         return self.module.course.owner
 
+    @property
+    def duration_seconds(self):
+        if self.video:
+            file = VideoFileClip(self.video.path)
+            return file.duration
+        else:
+            return 0
 
 
-    #  order = models.PositiveIntegerField(default=1)
-    # content_type = models.ForeignKey(ContentType,
-    # on_delete=models.CASCADE,
-    # limit_choices_to={'model__in':(
-    #                         'text',
-    #                         'video',
-    #                         'image',
-    #                         'file')})
-    # object_id = models.PositiveIntegerField()
-    # item = GenericForeignKey('content_type','object_id')
+    def duration(self):
+        return duration_formatting(self.duration_seconds)
 
 
-# class ItemBase(models.Model):
-#     owner = models.ForeignKey(CustomUser,related_name='%(class)s_related',on_delete=models.CASCADE)
-#     title = models.CharField(max_length=250)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-#     class Meta:
-#         abstract = True
-
-#     def __str__(self):
-#         return self.title
-
-# class Text(ItemBase):
-#     content = models.TextField()
-
-# class Image(ItemBase):
-#     content = models.FileField(upload_to='images')
-
-# class File(ItemBase):
-#     content = models.FileField(upload_to='files')
+@receiver(post_delete,sender=Content)
+def update_content_orders(sender,instance,*args,**kwargs):
+    for content in instance.module.contents.filter(order__gt=instance.order):
+        content.order = content.order-1
+        content.save()
 
 
-# class Video(ItemBase):
-#     content = models.URLField()
 
+@receiver(pre_save,sender=Content)
+def set_order(sender,instance,*args,**kwargs):
+    if not instance.order:
+        instance.order = instance.module.contents.count()+1
 
 
 

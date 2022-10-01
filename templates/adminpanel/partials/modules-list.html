@@ -1,0 +1,22 @@
+<div class="htmx-indicator">Updating...</div>
+{% for m in course.modules.all %}   
+    {% if m == module %}
+    <div><input type='hidden' name='module' value='{{m.pk}}'/>
+        <a style="text-decoration:none;" href="{% url 'course-modules' m.course.pk m.pk%}">
+            <div class="list-group-item list-group-item-action active" aria-current="true" id="{{m.pk}}">
+                {{m.order}}. {{m.title}}
+            </div>
+        </a>
+    </div>
+    {% else %}
+    <div><input type='hidden' name='module' value='{{m.pk}}'/>
+        <a style="text-decoration:none;" href="{% url 'course-modules' m.course.pk m.pk%}">
+            <div class="list-group-item list-group-item-action" id="{{m.pk}}">
+                <input type='hidden' name='item' value='{{m.pk}}' />{{m.order}}.{{m.title}}
+            </div>
+        </a>
+    </div>
+    {% endif %}
+    {% empty %}
+        There is no modules yet
+{% endfor %}
