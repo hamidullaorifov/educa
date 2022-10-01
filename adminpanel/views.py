@@ -197,8 +197,9 @@ def delete_content(request,id):
 @csrf_exempt
 @login_required
 def sort_modules(request,pk,module_pk):
-    course = get_object_or_404(Course,pk=pk)
-    if not course.owner == request.user:
+    modules = []
+    current_module = get_object_or_404(Module,pk=module_pk)
+    if not current_module.owner == request.user:
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
     current_module = get_object_or_404(Module,pk=module_pk)
     if request.method=='POST':
@@ -206,10 +207,11 @@ def sort_modules(request,pk,module_pk):
         print(modules_pks)
         for idx,id in enumerate(modules_pks,start=1):
             module = get_object_or_404(Module,pk=id)
+            modules.append(module)
             module.order = idx
             module.save()
     context = {
-        'course':course,
+        'modules_list':modules,
         'module':current_module,
     }
     return render(request,'adminpanel/partials/modules-list.html',context)

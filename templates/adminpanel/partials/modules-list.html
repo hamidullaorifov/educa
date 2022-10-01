@@ -1,5 +1,5 @@
 <div class="htmx-indicator">Updating...</div>
-{% for m in course.modules.all %}   
+{% for m in modules_list %}   
     {% if m == module %}
     <div><input type='hidden' name='module' value='{{m.pk}}'/>
         <a style="text-decoration:none;" href="{% url 'course-modules' m.course.pk m.pk%}">
