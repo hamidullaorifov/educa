@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.urls import reverse
-from django.db.models.signals import pre_save,post_delete
+from django.db.models.signals import pre_save,post_delete,pre_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
 from moviepy.editor import VideoFileClip
@@ -41,6 +41,7 @@ class Course(models.Model):
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
     students = models.ManyToManyField(CustomUser,related_name='courses',blank=True)
     course_duration_seconds = models.FloatField(null=True,blank=True)
+    is_ready = models.BooleanField(default=False)
     class Meta:
         ordering = ['-created']
     def __str__(self):
@@ -162,7 +163,17 @@ def update_content_orders(sender,instance,*args,**kwargs):
         content.order = content.order-1
         content.save()
 
+@receiver(pre_delete,sender=Module)
+def update_status_module_course(sender,instance,*args,**kwargs):
+    instance.course.is_ready = False
+    instance.course.save()
 
+
+
+@receiver(pre_delete,sender=Content)
+def update_status_module_course(sender,instance,*args,**kwargs):
+    instance.module.course.is_ready = False
+    instance.module.course.save()
 
 @receiver(pre_save,sender=Content)
 def set_order(sender,instance,*args,**kwargs):

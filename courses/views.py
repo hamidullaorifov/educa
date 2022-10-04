@@ -14,7 +14,7 @@ from django.db.models import Count
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 def home(request):
-    courses = Course.objects.annotate(num_students=Count('students')).order_by('-num_students')[:16]
+    courses = Course.objects.annotate(num_students=Count('students')).filter(is_ready=True).order_by('-num_students')[:16]
     context = {
         'courses':courses,
     }
@@ -24,8 +24,7 @@ def home(request):
 
 
 def paginate_courses(request):
-    print(request.user)
-    courses_list = Course.objects.all()
+    courses_list = Course.objects.filter(is_ready=True)
     paginator = Paginator(courses_list,8)
     page_number = request.GET.get('page',1)
     try:

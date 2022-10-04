@@ -6,6 +6,9 @@ urlpatterns = [
     # path('forbidden',views.forbidden,name='forbidden'),
     path('sort-modules/<int:pk>/<int:module_pk>',views.sort_modules,name='sort_modules'),
     path('sort-contents/<int:pk>/<int:module_pk>',views.sort_contents,name='sort_contents'),
+
+    path('status_changed/<int:pk>',views.status_changed,name="status_changed"),
+    
     path('mycourses/',views.my_courses,name='mycourses'),
     path('create/',views.create_coure,name='create_course'),
     path('edit/<int:pk>',views.edit_course,name='edit_course'),

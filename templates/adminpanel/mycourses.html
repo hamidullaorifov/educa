@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1>My courses</h1>
-
+    <div class="" id="result-response">
+      
+    </div>
     <table class="table table-hover">
         <thead>
           <tr>
@@ -12,6 +14,7 @@
             <th scope="col">Price</th>
             <th scope="col">Rating</th>
             <th scope="col">Students</th>
+            <th scope="col">Ready</th>
             <th scope="col">Actions</th>
 
           </tr>
@@ -25,6 +28,21 @@
                     <td>{{course.title}}</td>
                     <td>{{course.price}} $</td>
                     <td>{{course.average_rating}}</td>
+                    <td>
+                      {% if course.is_ready %}
+                        <div class="form-check">
+                          <input class="form-check-input course-ready" name="course{{course.pk}}" type="checkbox" 
+                          value="{{course.is_ready}}" 
+                          id="{{course.pk}}" 
+                          checked>
+                        </div>
+                      {% else %}
+                        <div class="form-check">
+                          <input class="form-check-input course-ready" name="course{{course.pk}}" type="checkbox"  value="{{course.is_ready}}" id="{{course.pk}}">
+                        </div>
+                      {% endif %}
+                      
+                    </td>
                     <td>{{course.students.count}}</td>
                     <td>
                       <a href="{% url 'edit_course' course.pk %}"><i class="fa-solid fa-pencil"></i></a>
@@ -41,9 +59,37 @@
 
       <br>
       <a href="{% url 'create_course' %}" class="btn btn-outline-primary">Add new course</a>
-    
+   
+      
+      {% comment %} <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script> {% endcomment %}
+       <script>
+        let response_msg = document.getElementById("result-response");
+        let course_ready_flags = document.querySelectorAll(".course-ready");
+        for(let i=0;i<course_ready_flags.length;i++){
+          course_ready_flags[i].addEventListener("change",function(){
+            let element_id = course_ready_flags[i].getAttribute("id");
+            fetch("/teachers/status_changed/"+element_id,{
+              method : 'POST',
+              body:JSON.stringify({
+                id:element_id,
+                 status:course_ready_flags[i].value
+              })
+            })
+            .then((response)=>response.json())
+            .then((data) =>{
+              if(data['success']){
+                response_msg.innerHTML = '<p class="text-success">'+data['message']+'</p>'
+              }
+              else{
+                response_msg.innerHTML = '<p class="text-danger">'+data['message']+'</p>'
+                course_ready_flags[i].checked=false;
+              }
+            })
+            .catch((error)=>console.log("Error occured:",error));
+          })
+        } 
 
-        
-    
+      </script>
+          
     
 {% endblock content %}

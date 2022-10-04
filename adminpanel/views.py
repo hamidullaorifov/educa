@@ -1,3 +1,4 @@
+import json
 from django.core.exceptions import ValidationError
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -204,7 +205,6 @@ def sort_modules(request,pk,module_pk):
     current_module = get_object_or_404(Module,pk=module_pk)
     if request.method=='POST':
         modules_pks = request.POST.getlist("module")
-        print(modules_pks)
         for idx,id in enumerate(modules_pks,start=1):
             module = get_object_or_404(Module,pk=id)
             modules.append(module)
@@ -230,3 +230,42 @@ def sort_contents(request,pk,module_pk):
             content.order=idx
             content.save()
     return render(request,'adminpanel/partials/contents-list.html',{'module':module})
+
+@csrf_exempt
+def status_changed(request,pk):
+    course = get_object_or_404(Course,pk=pk)
+    data = json.loads(request.body)
+    if data['status']=='True':
+        course.is_ready = False
+        course.save()
+        return JsonResponse(
+                {
+                    'message':"Successfully changed",
+                    'success':True
+                })
+
+    
+    if not course.modules.all():
+        response_message ='\"'+course.title +'\" hasn\'t modules'
+        return JsonResponse(
+            {
+                'message':response_message,
+                'success':False
+            })
+    for module in course.modules.all():
+        if not module.contents.all():
+            response_message='\"'+module.title+'\" module of course \"'+course.title+'\" hasn\'t contents'
+            return JsonResponse(
+            {
+                'message':response_message,
+                'success':False
+            })
+    
+    course.is_ready = True
+    course.save()
+    return JsonResponse(
+            {
+                'message':"Successfully changed",
+                'success':True
+            })
+    
