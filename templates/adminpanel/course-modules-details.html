@@ -85,6 +85,7 @@
                 
 
                 <span id="for_swap_modules_response" hidden></span>
+                {% if module %}
                 <form class="sortable list-group" hx-post="{% url 'sort_modules' course.pk module.pk %}" hx-trigger="end" >
                     <div class="htmx-indicator">Updating...</div>
                 {% for m in course.modules.all %}   
@@ -105,10 +106,13 @@
                         </a>
                     </div>
                     {% endif %}
-                    {% empty %}
-                        There is no modules yet
+                    {% comment %} {% empty %} {% endcomment %}
+                       
                 {% endfor %}
                 </form>
+                {% else %}
+                There is no modules yet
+                {% endif %}
                 <br><br>
                 <a href="{% url 'create_module' course.slug %}" class="btn btn-primary">Add new module</a>
             </div>

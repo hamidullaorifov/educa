@@ -65,10 +65,13 @@ def course_modules_details(request,pk,module_pk=None):
     course = get_object_or_404(Course,pk=pk)
     if not course.owner == request.user:
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
-    if module_pk:
-        module = course.modules.get(pk=module_pk)
+    if not course.modules.exists():
+        module = None
     else:
-        module = course.modules.first()
+        if module_pk:
+            module = course.modules.get(pk=module_pk)
+        else:
+            module = course.modules.first()
     context = {
         'course':course,
         'module':module,
@@ -202,7 +205,7 @@ def sort_modules(request,pk,module_pk):
     current_module = get_object_or_404(Module,pk=module_pk)
     if not current_module.owner == request.user:
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
-    current_module = get_object_or_404(Module,pk=module_pk)
+    # current_module = get_object_or_404(Module,pk=module_pk)
     if request.method=='POST':
         modules_pks = request.POST.getlist("module")
         for idx,id in enumerate(modules_pks,start=1):

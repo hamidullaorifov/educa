@@ -11,6 +11,8 @@ class CourseForm(ModelForm):
         super(CourseForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+            print(visible)
+            # visible.field.widget.attrs['id'] = visible.field.name
 
 class ModuleForm(ModelForm):
     class Meta:
