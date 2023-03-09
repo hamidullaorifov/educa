@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'adminpanel',
 
 
-    'fontawesomefree',
+    # 'fontawesomefree',
     # 'guardian',
 ]
 

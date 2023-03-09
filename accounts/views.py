@@ -28,6 +28,10 @@ def sign_up(request):
         firstname=data['firstname']
         lastname=data['lastname']
         password=data['pass']
+        if CustomUser.objects.filter(username=username).exists():
+            return render(request,'accounts/signup.html',{'message':'This username already in use'})
+        if CustomUser.objects.filter(email=email).exists():
+            return render(request,'accounts/signup.html',{'message':'This email already in use'})
         user = CustomUser.objects.create_user(
           username=username,
           email=email,
