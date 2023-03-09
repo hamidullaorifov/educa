@@ -1,8 +1,28 @@
 {% extends 'adminpanel/base.html' %}
 {% block content %}
-    <h1>Course Modules</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+<style>
+    .jumbotron-padding {
+     padding-top: 20px;
+    }
+</style>
     <div class="container">
         {% if module %}
+        <div class="jumbotron jumbotron-padding">
+            <h1 class="display-6">{{module.title}}</h1>
+            <p class="">
+                {{module.description}}
+            </p>
+            
+            <hr class="my-4">
+            <!-- <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> -->
+            <a class="btn btn-primary  mr-2" href="{% url 'update_module' module.pk %}" role="button" id="update-module-btn">Update</a>
+            <a class="btn btn-danger " href="{% url 'delete_module' module.pk %}" role="button" id="delete-module-btn">Delete</a>
+           </div>  
+
+
+           
+        {% comment %} {% if module %}
         <div class="module-fields">
             <div class="module-title">
                 <h3>Title:</h3>
@@ -19,7 +39,7 @@
                     <a href="{% url 'delete_module' module.pk %}" class="btn btn-danger btn-sm" id="delete-module-btn">Delete</a>
     
             <hr>
-        </div>
+        </div> {% endcomment %}
         
         
 
