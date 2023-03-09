@@ -16,7 +16,7 @@ from .utils import duration_formatting
 
 class CustomUser(AbstractUser):
     profile_picture = models.ImageField(null=True,blank=True,upload_to='images')
-    role = models.CharField(max_length=30,choices=(('student','Student'),('teacher','teacher')))
+    # role = models.CharField(max_length=30,choices=(('student','Student'),('teacher','teacher')))
 
 
 class Subject(models.Model):
