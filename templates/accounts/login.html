@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load socialaccount %}
 <html lang="en">
 <head>
 	<title>Login V4</title>
@@ -81,15 +82,15 @@
                         </div>
     
                         <div class="flex-c-m">
-                            <a href="#" class="login100-social-item bg1">
+                            <a href='{% provider_login_url "facebook" %}' class="login100-social-item bg1">
                                 <i class="fa fa-facebook"></i>
                             </a>
     
-                            <a href="#" class="login100-social-item bg2">
-                                <i class="fa fa-twitter"></i>
+                            <a href="{% provider_login_url 'github' %}" class="login100-social-item bg2">
+                                <i class="fa fa-github"></i>
                             </a>
     
-                            <a href="#" class="login100-social-item bg3">
+                            <a href='{% provider_login_url "google" %}' class="login100-social-item bg3">
                                 <i class="fa fa-google"></i>
                             </a>
                         </div>

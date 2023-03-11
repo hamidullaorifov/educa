@@ -26,6 +26,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('purchase/',include('purchase.urls')),
     path('teachers/',include('adminpanel.urls')),
+    #allauth
+    path('account/', include('allauth.urls')),
 ]
 
 
