@@ -19,14 +19,14 @@
             <a href="{% url 'course_detail' module.course.slug %}" class="btn btn-outline-primary">Back</a>
             <h1>{{ module.title }} module details</h1>
             <p>{{module.description}}</p>
-            <p>Duration: {{module.duration}}<p>
+            {% comment %} <p>Duration: {{module.duration}}<p> {% endcomment %}
           </div>
         <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Content</th>
-                <th scope="col">Duration</th>
+                {% comment %} <th scope="col">Duration</th> {% endcomment %}
               </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@
                     <tr>
                         <th scope="row">#</th>
                         <td>{{content.title}}</td>
-                        <td>{{content.duration}}</td>
+                        {% comment %} <td>{{content.duration}}</td> {% endcomment %}
                     </tr>
                     {% endfor %}
             </tbody>

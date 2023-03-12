@@ -33,14 +33,14 @@ class Subject(models.Model):
 class Course(models.Model):
     owner = models.ForeignKey(CustomUser,related_name='courses_created',on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject,related_name='courses',on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=30)
     slug = models.SlugField(max_length=200,unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(upload_to='images',null=True,blank=True)
     price = models.DecimalField(default=0,decimal_places=2,max_digits=6)
     students = models.ManyToManyField(CustomUser,related_name='courses',blank=True)
-    course_duration_seconds = models.FloatField(null=True,blank=True)
+    # course_duration_seconds = models.FloatField(null=True,blank=True)
     is_ready = models.BooleanField(default=False)
     class Meta:
         ordering = ['-created']
@@ -68,7 +68,10 @@ class Course(models.Model):
             return "No"
     
 
-
+    @property
+    def course_duration_seconds(self):
+      return sum([m.module_duration_seconds for m in self.modules.all()])
+      pass
 
 
     @property
@@ -79,8 +82,8 @@ class Course(models.Model):
 def slugify_title(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify(instance.title)
-    if not instance.course_duration_seconds:
-        instance.course_duration_seconds = sum([m.module_duration_seconds for m in instance.modules.all()])
+    # if not instance.course_duration_seconds:
+    #     instance.course_duration_seconds = sum([m.module_duration_seconds for m in instance.modules.all()])
 
 
     
@@ -96,7 +99,7 @@ class Module(models.Model):
     course = models.ForeignKey(Course,related_name='modules',on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    module_duration_seconds = models.FloatField(null=True,blank=True)
+    # module_duration_seconds = models.FloatField(null=True,blank=True)
     order = models.PositiveIntegerField(blank=True,null=True)
 
     class Meta:
@@ -110,7 +113,10 @@ class Module(models.Model):
     def owner(self):
         return self.course.owner
     
-
+    @property
+    def module_duration_seconds(self):
+      return sum([c.duration_seconds for c in self.contents.all()])
+      
     @property
     def duration(self):
         return duration_formatting(self.module_duration_seconds)
@@ -118,8 +124,8 @@ class Module(models.Model):
 
 @receiver(pre_save,sender=Module)
 def set_additional_fields(sender,instance,*args,**kwargs):
-    if not instance.module_duration_seconds:
-        instance.module_duration_seconds = sum([c.duration_seconds for c in instance.contents.all()])
+    # if not instance.module_duration_seconds:
+    #     instance.module_duration_seconds = sum([c.duration_seconds for c in instance.contents.all()])
     if not instance.order:
         instance.order = instance.course.modules.count()+1
 
@@ -139,21 +145,29 @@ class Content(models.Model):
 
     class Meta:
         ordering = ('order',)
-
+    @property
+    def video_url(self):
+        url = ''
+        try:
+            url = self.video.url
+        except:
+            pass
+        return url
     @property
     def owner(self):
         return self.module.course.owner
 
     @property
     def duration_seconds(self):
-        if self.video:
+        if self.video_url:
             file = VideoFileClip(self.video.path)
-            return file.duration
+            return int(file.duration)
         else:
             return 0
 
-
+    @property
     def duration(self):
+        print("DS",self.duration_seconds)
         return duration_formatting(self.duration_seconds)
 
 

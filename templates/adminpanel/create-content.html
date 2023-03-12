@@ -1,7 +1,7 @@
 {% extends 'adminpanel/base.html' %}
 {% block content %}
         <h1>Create content</h1>
-        <form method="post" enctype="mutipart/form-data" class="form-group w-50">
+        <form method="post" enctype="multipart/form-data" class="form-group w-50">
             {% csrf_token %}
             {{form.as_p}}
         <button type="submit" class="btn btn-primary w-100">Save</button>

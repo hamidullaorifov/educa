@@ -154,12 +154,12 @@ def create_content(request,pk):
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
     form = ContentForm()
     if request.method == 'POST':
-        form = ContentForm(request.POST)
+        form = ContentForm(request.POST,request.FILES)
         if form.is_valid():
             new_content = form.save(commit=False)
             new_content.module = module
             new_content.save()
-            return redirect('course-modules',pk=module.course.pk)
+            return redirect('course-modules',pk=module.course.pk,module_pk=module.pk)
         else:
             form.add_error('title',error=ValidationError())
     return render(request,'adminpanel/create-content.html',{'form':form})
@@ -174,10 +174,10 @@ def update_content(request,id):
         return HttpResponseForbidden("<h1>You are not allowed</h1>")
     form = ContentForm(instance=content)
     if request.method == 'POST':
-        form = ContentForm(request.POST,instance=content)
+        form = ContentForm(request.POST,request.FILES,instance=content)
         if form.is_valid():
             new_content = form.save()
-            return redirect('course-modules',pk=content.module.course.pk)
+            return redirect('course-modules',pk=content.module.course.pk,module_pk=content.module.pk)
         else:
             form.add_error('title',error=ValidationError())
     return render(request,'adminpanel/update-content.html',{'form':form})
@@ -191,7 +191,7 @@ def delete_content(request,id):
     course = content.module.course
     if request.method=='POST':
         content.delete()
-        return redirect('course-modules',pk=course.pk)
+        return redirect('course-modules',pk=course.pk,module_pk=content.module.pk)
     return render(request,'adminpanel/delete-content.html',{'course':course})
 
 
