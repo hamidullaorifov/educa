@@ -100,7 +100,7 @@
 								<div class="col-lg-3">
 									<div class="avg-review">
 										Average <br>
-										<span>{{course.average_rating}}</span> <br>
+										<span>{{course.average_rating|floatformat}}</span> <br>
 										<input type="hidden" id="myrate" value="{{myrate}}">
 										({{course.ratings.count}} Ratings)
 									</div>
