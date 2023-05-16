@@ -1,3 +1,3 @@
 # educa
 
-**Link** `https://educa.hamidulla.repl.co/`
+**Link** https://educa.hamidulla.repl.co/
