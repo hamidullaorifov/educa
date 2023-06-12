@@ -37,8 +37,7 @@ def sign_up(request):
           email=email,
           first_name=firstname,
           last_name=lastname,
-          password=password,
-          role='student' 
+          password=password, 
         )
         login(request,user)
         return redirect('/')
