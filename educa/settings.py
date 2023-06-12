@@ -70,32 +70,32 @@ INSTALLED_APPS = [
 
 
 
-SITE_ID = 1
+# SITE_ID = 1
 
 
 
 
-SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_LOGIN_ON_GET = True
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+# SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': [
+#             'profile',
+#             'email',
+#         ],
+#         'AUTH_PARAMS': {
+#             'access_type': 'online',
+#         },
         
-    },
-    'facebook':{
-        'METHOD': 'oauth2',
-    }
+#     },
+#     'facebook':{
+#         'METHOD': 'oauth2',
+#     }
 
     
-}
+# }
 
 
 
@@ -171,11 +171,11 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'courses.CustomUser'
 
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    # 'guardian.backends.ObjectPermissionBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     # 'guardian.backends.ObjectPermissionBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# )
 
 
 # Internationalization
